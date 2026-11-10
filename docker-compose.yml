@@ -1,0 +1,8 @@
+services:
+  pdf-imza:
+    build: .
+    image: pdf-imza:latest
+    container_name: pdf-imza
+    ports:
+      - "8080:80"
+    restart: unless-stopped

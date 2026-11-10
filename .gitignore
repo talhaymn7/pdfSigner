@@ -1,0 +1,7 @@
+node_modules/
+.npm-cache/
+.venv/
+dist/
+public/pdfjs/
+tests/e2e/results/
+tests/e2e/node_modules/

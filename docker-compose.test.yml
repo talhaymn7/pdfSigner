@@ -1,0 +1,21 @@
+# Browser tests: builds the app image and runs Playwright against it.
+name: pdf-imza-test
+#   docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from e2e
+services:
+  web:
+    build: .
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+  e2e:
+    build: tests/e2e
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://web
+    volumes:
+      - ./tests/e2e/results:/e2e/results
+      - ./docs/images:/e2e/screenshots

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF İmza</title>
+</head>
+<body>
+  <header class="toolbar">
+    <div class="brand">PDF İmza</div>
+    <label class="btn primary">
+      Dosya Ekle
+      <input id="fileInput" type="file" accept="application/pdf,.pdf" multiple hidden />
+    </label>
+    <button class="btn" id="btnNewSig">İmza Oluştur</button>
+    <button class="btn" id="btnNewInit">Paraf Oluştur</button>
+    <button class="btn" id="btnText" disabled title="Sayfaya metin kutusu ekle">Metin Ekle</button>
+    <div class="spacer"></div>
+    <button class="btn icon" id="zoomOut" title="Uzaklaştır">−</button>
+    <span id="zoomLabel" class="zoom-label">100%</span>
+    <button class="btn icon" id="zoomIn" title="Yakınlaştır">+</button>
+    <button class="btn" id="zoomFit" title="Sayfa genişliğine sığdır">Sığdır</button>
+    <button class="btn" id="btnClear" title="Tüm dosyaları kapat">Temizle</button>
+    <button class="btn success" id="btnSave" disabled>Kaydet</button>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar left">
+      <div class="side-head">
+        <span>Sayfalar <small id="pageCount"></small></span>
+        <button class="btn small danger" id="btnDelSelected" disabled>Seçilenleri Sil</button>
+      </div>
+      <p class="hint">Sürükleyerek sırala. Kutucukla seç.</p>
+      <div id="thumbs" class="thumbs"></div>
+    </aside>
+
+    <section id="viewer" class="viewer">
+      <div id="empty" class="empty">
+        <div class="drop">
+          <strong>PDF dosyalarını buraya sürükleyin</strong>
+          <span>ya da yukarıdan “Dosya Ekle”ye tıklayın.<br />Birden fazla dosya eklerseniz sırayla birleştirilir.</span>
+        </div>
+      </div>
+      <div id="pages" class="pages"></div>
+    </section>
+
+    <aside class="sidebar right">
+      <div class="side-head"><span>İmzalarım</span></div>
+      <div id="sigList" class="sig-list"></div>
+      <div class="side-head"><span>Paraflarım</span></div>
+      <div id="initList" class="sig-list"></div>
+      <p class="hint">Bir imzaya/parafa tıklayın, sonra sayfada koymak istediğiniz yere tıklayın. Yerleştirdikten sonra sürükleyerek taşıyın, sağ alt köşeden boyutlandırın. Metin kutusunu düzenlemek için üzerine tıklayın.</p>
+    </aside>
+  </main>
+
+  <div id="status" class="status" hidden></div>
+
+  <dialog id="sigDialog" class="dialog">
+    <form method="dialog" class="dialog-inner">
+      <h2 id="sigDialogTitle">İmza Oluştur</h2>
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="draw">Çiz</button>
+        <button type="button" class="tab" data-tab="type">Yaz</button>
+        <button type="button" class="tab" data-tab="upload">Resim Yükle</button>
+      </div>
+
+      <div class="row colors">
+        <span>Renk</span>
+        <button type="button" class="swatch" data-color="#111111" title="Siyah"></button>
+        <button type="button" class="swatch" data-color="#1a3fb0" title="Mavi"></button>
+        <button type="button" class="swatch" data-color="#0b1f5c" title="Lacivert"></button>
+        <button type="button" class="swatch" data-color="#b42318" title="Kırmızı"></button>
+        <button type="button" class="swatch" data-color="#1d7a3a" title="Yeşil"></button>
+        <input type="color" id="sigColorCustom" title="Özel renk" />
+      </div>
+
+      <div class="tab-panel" data-panel="draw">
+        <canvas id="drawPad" class="pad" width="1200" height="400"></canvas>
+        <div class="row">
+          <label>Kalınlık
+            <input id="penWidth" type="range" min="2" max="16" step="1" />
+          </label>
+          <button type="button" class="btn small" id="drawClear">Temizle</button>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="type" hidden>
+        <input id="typeText" class="text-input" type="text" placeholder="Adınız Soyadınız" />
+        <div class="row">
+          <label>Yazı tipi
+            <select id="typeFont">
+              <option value="Great Vibes">Great Vibes</option>
+              <option value="Dancing Script">Dancing Script</option>
+              <option value="Caveat">Caveat</option>
+            </select>
+          </label>
+        </div>
+        <canvas id="typePreview" class="pad" width="1200" height="400"></canvas>
+      </div>
+
+      <div class="tab-panel" data-panel="upload" hidden>
+        <input id="uploadInput" type="file" accept="image/png,image/jpeg" />
+        <div class="row">
+          <label class="check"><input id="removeBg" type="checkbox" checked /> Beyaz arka planı kaldır</label>
+          <label class="check"><input id="recolorUpload" type="checkbox" /> Seçili renge boya</label>
+        </div>
+        <canvas id="uploadPreview" class="pad" width="1200" height="400"></canvas>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="submit" class="btn" value="cancel">Vazgeç</button>
+        <button type="button" class="btn primary" id="sigSave">Kaydet</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

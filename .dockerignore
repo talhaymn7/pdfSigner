@@ -1,0 +1,10 @@
+node_modules
+.npm-cache
+.venv
+dist
+public/pdfjs
+tests
+docs
+.git
+.github
+*.md
